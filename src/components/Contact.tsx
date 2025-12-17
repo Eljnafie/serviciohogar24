@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Phone, MessageCircle, MapPin, Mail, Send } from 'lucide-react';
+import { Phone, MessageCircle, MapPin, Mail, Send, Loader2 } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { SiteConfig } from '../types';
 import { DEFAULT_SITE_CONFIG } from '../constants';
@@ -16,19 +16,52 @@ const Contact: React.FC = () => {
     message: ''
   });
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [config, setConfig] = useState<SiteConfig>(DEFAULT_SITE_CONFIG);
 
   useEffect(() => {
     dataService.getSiteConfig().then(setConfig);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTimeout(() => {
-        setSent(true);
-        setFormData({ name: '', phone: '', type: 'Plumbing', message: '' });
-        addToast('Solicitud enviada correctamente', 'success');
-    }, 1000);
+    setLoading(true);
+
+    try {
+        const emailDestino = config.contact.email;
+        
+        // Send email via FormSubmit.co
+        const response = await fetch(`https://formsubmit.co/ajax/${emailDestino}`, {
+            method: "POST",
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                _subject: `📩 NUEVO MENSAJE WEB: ${formData.type} - ${formData.name}`,
+                _template: "table",
+                nombre: formData.name,
+                telefono: formData.phone,
+                servicio_tipo: formData.type,
+                mensaje_cliente: formData.message,
+                fecha: new Date().toLocaleString(),
+                _captcha: "false" // Disable captcha for cleaner UX
+            })
+        });
+
+        if (response.ok) {
+            setSent(true);
+            setFormData({ name: '', phone: '', type: 'Plumbing', message: '' });
+            addToast('Solicitud enviada correctamente', 'success');
+        } else {
+            throw new Error('Error en el envío');
+        }
+    } catch (error) {
+        console.error("Error sending form", error);
+        addToast('Error al enviar el formulario. Por favor, llámanos directamente.', 'error');
+    } finally {
+        setLoading(false);
+    }
   };
 
   // Helpers to format links safely (Removing non-digits)
@@ -163,8 +196,16 @@ const Contact: React.FC = () => {
                                 onChange={(e) => setFormData({...formData, message: e.target.value})}
                             ></textarea>
                         </div>
-                        <button type="submit" className="w-full bg-blue-700 text-white py-4 rounded-lg font-bold text-lg hover:bg-blue-800 transition shadow-lg">
-                            {t('form_submit')}
+                        <button 
+                            type="submit" 
+                            disabled={loading}
+                            className="w-full bg-blue-700 text-white py-4 rounded-lg font-bold text-lg hover:bg-blue-800 transition shadow-lg flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                            {loading ? (
+                                <><Loader2 className="animate-spin" size={24} /> Enviando...</>
+                            ) : (
+                                t('form_submit')
+                            )}
                         </button>
                     </form>
                 )}
