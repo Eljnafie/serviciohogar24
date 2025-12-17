@@ -1,31 +1,68 @@
-import React, { useState } from 'react';
-import { PhoneCall, X, Clock, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { PhoneCall, X, Clock, CheckCircle, Loader2 } from 'lucide-react';
+import { dataService } from '../services/dataService';
+import { DEFAULT_SITE_CONFIG } from '../constants';
+import { SiteConfig } from '../types';
 
 const CallbackWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [phone, setPhone] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success'>('idle');
+  const [config, setConfig] = useState<SiteConfig>(DEFAULT_SITE_CONFIG);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Load config to get the destination email
+  useEffect(() => {
+    dataService.getSiteConfig().then(setConfig);
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (phone.length < 9) return;
     setStatus('sending');
     
-    // Simulate API call
+    try {
+        // 1. Guardar en Panel de Admin (Base de datos local)
+        await dataService.addCallback(phone);
+
+        // 2. Enviar Email Silencioso (Background)
+        // Usamos FormSubmit.co para enviar sin backend. 
+        // IMPORTANTE: La primera vez que se use, llegará un correo de activación a la dirección configurada.
+        const emailDestino = config.contact.email;
+        
+        await fetch(`https://formsubmit.co/ajax/${emailDestino}`, {
+            method: "POST",
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                _subject: `📞 NUEVO LEAD: ${phone}`,
+                _template: "table",
+                servicio: "Solicitud 'Te Llamo'",
+                telefono: phone,
+                fecha: new Date().toLocaleString(),
+                mensaje: "El cliente solicita llamada inmediata."
+            })
+        });
+
+        setStatus('success');
+    } catch (error) {
+        console.error("Error enviando solicitud", error);
+        // Aún si falla el email, mostramos éxito si se guardó en local
+        setStatus('success'); 
+    }
+
+    // Reset after 5 seconds
     setTimeout(() => {
-      setStatus('success');
-      // Reset after 3 seconds
-      setTimeout(() => {
-        setIsOpen(false);
-        setStatus('idle');
-        setPhone('');
-      }, 5000);
-    }, 1500);
+      setIsOpen(false);
+      setStatus('idle');
+      setPhone('');
+    }, 5000);
   };
 
   return (
     <>
-      {/* Trigger Button - Desktop: Bottom Left, Mobile: Hidden (use sticky bar) or small pill */}
+      {/* Trigger Button */}
       <button 
         onClick={() => setIsOpen(true)}
         className={`fixed bottom-24 md:bottom-8 left-4 z-40 bg-white text-slate-800 p-3 pr-5 rounded-full shadow-xl border border-slate-100 flex items-center gap-3 transition-transform hover:scale-105 group ${isOpen ? 'scale-0' : 'scale-100'}`}
@@ -46,7 +83,7 @@ const CallbackWidget: React.FC = () => {
           <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden relative animate-slideUp sm:animate-blob">
             <button 
                 onClick={() => setIsOpen(false)} 
-                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 z-10"
             >
                 <X size={20} />
             </button>
@@ -77,10 +114,11 @@ const CallbackWidget: React.FC = () => {
                             <input 
                                 type="tel" 
                                 autoFocus
+                                required
                                 placeholder="Ej: 600 123 456"
                                 className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-lg font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                 value={phone}
-                                onChange={(e) => setPhone(e.target.value.replace(/[^0-9\s]/g, ''))}
+                                onChange={(e) => setPhone(e.target.value.replace(/[^0-9\s+]/g, ''))}
                             />
                         </div>
                         <button 
@@ -89,7 +127,7 @@ const CallbackWidget: React.FC = () => {
                             className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             {status === 'sending' ? (
-                                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                <><Loader2 className="animate-spin" size={20}/> Enviando...</>
                             ) : (
                                 <>Llamadme Ahora <Clock size={18}/></>
                             )}

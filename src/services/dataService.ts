@@ -1,10 +1,12 @@
 import { INITIAL_BLOG_POSTS, MOCK_SERVICES, DEFAULT_SITE_CONFIG, TRANSLATIONS, MOCK_FAQS, PRICING_CONFIG } from '../constants';
-import { BlogPost, ServiceItem, SiteConfig, FAQItem } from '../types';
+import { BlogPost, ServiceItem, SiteConfig, FAQItem, CallbackRequest, AdminCredentials } from '../types';
 
 const STORAGE_KEY = 'serviciohogar24_posts';
 const CONFIG_STORAGE_KEY = 'serviciohogar24_config';
 const SERVICES_STORAGE_KEY = 'serviciohogar24_services';
 const FAQS_STORAGE_KEY = 'serviciohogar24_faqs';
+const CALLBACKS_STORAGE_KEY = 'serviciohogar24_callbacks';
+const ADMIN_STORAGE_KEY = 'serviciohogar24_admin';
 
 // --- BLOG POSTS ---
 const getInitialPosts = (): BlogPost[] => {
@@ -127,6 +129,74 @@ export const dataService = {
       memoryPosts = memoryPosts.filter(p => p.id !== id);
       savePosts(memoryPosts);
       setTimeout(() => resolve(), 300);
+    });
+  },
+
+  // --- CALLBACKS / LEADS ---
+  getCallbacks: async (): Promise<CallbackRequest[]> => {
+    return new Promise((resolve) => {
+      try {
+        const stored = localStorage.getItem(CALLBACKS_STORAGE_KEY);
+        resolve(stored ? JSON.parse(stored) : []);
+      } catch { resolve([]); }
+    });
+  },
+
+  addCallback: async (phone: string): Promise<void> => {
+    return new Promise((resolve) => {
+      const stored = localStorage.getItem(CALLBACKS_STORAGE_KEY);
+      const callbacks: CallbackRequest[] = stored ? JSON.parse(stored) : [];
+      const newCallback: CallbackRequest = {
+        id: Date.now().toString(),
+        phone,
+        date: new Date().toISOString(),
+        status: 'pending'
+      };
+      localStorage.setItem(CALLBACKS_STORAGE_KEY, JSON.stringify([newCallback, ...callbacks]));
+      resolve();
+    });
+  },
+
+  updateCallbackStatus: async (id: string, status: 'pending' | 'called'): Promise<void> => {
+    return new Promise((resolve) => {
+      const stored = localStorage.getItem(CALLBACKS_STORAGE_KEY);
+      if (stored) {
+        let callbacks: CallbackRequest[] = JSON.parse(stored);
+        callbacks = callbacks.map(c => c.id === id ? { ...c, status } : c);
+        localStorage.setItem(CALLBACKS_STORAGE_KEY, JSON.stringify(callbacks));
+      }
+      resolve();
+    });
+  },
+
+  deleteCallback: async (id: string): Promise<void> => {
+    return new Promise((resolve) => {
+      const stored = localStorage.getItem(CALLBACKS_STORAGE_KEY);
+      if (stored) {
+        const callbacks: CallbackRequest[] = JSON.parse(stored);
+        localStorage.setItem(CALLBACKS_STORAGE_KEY, JSON.stringify(callbacks.filter(c => c.id !== id)));
+      }
+      resolve();
+    });
+  },
+
+  // --- ADMIN AUTH ---
+  getAdminCredentials: async (): Promise<AdminCredentials> => {
+    return new Promise((resolve) => {
+      const stored = localStorage.getItem(ADMIN_STORAGE_KEY);
+      // Default credentials
+      if (!stored) {
+        resolve({ email: 'admin@admin.com', password: 'admin' });
+      } else {
+        resolve(JSON.parse(stored));
+      }
+    });
+  },
+
+  updateAdminCredentials: async (creds: AdminCredentials): Promise<void> => {
+    return new Promise((resolve) => {
+      localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(creds));
+      resolve();
     });
   },
 

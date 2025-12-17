@@ -1,3 +1,4 @@
+
 export interface ServiceItem {
   id: string;
   titleKey?: string; 
@@ -47,6 +48,18 @@ export interface FAQItem {
   id: string;
   question: string;
   answer: string;
+}
+
+export interface CallbackRequest {
+  id: string;
+  phone: string;
+  date: string; // ISO string
+  status: 'pending' | 'called';
+}
+
+export interface AdminCredentials {
+  email: string;
+  password: string; // Stored locally for this demo
 }
 
 export interface SiteConfig {
