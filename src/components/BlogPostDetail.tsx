@@ -113,8 +113,8 @@ const BlogPostDetail: React.FC = () => {
     "@graph": [articleSchema, breadcrumbSchema]
   };
 
-  // Helper for phone link
-  const phoneLink = `tel:${config.contact.phone.replace(/\D/g, '')}`;
+  // Helper for phone link - Removes spaces but keeps the + sign
+  const phoneLink = `tel:${config.contact.phone.replace(/\s+/g, '')}`;
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20 relative">
