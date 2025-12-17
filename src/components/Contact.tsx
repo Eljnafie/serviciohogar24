@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Phone, MessageCircle, MapPin, Mail, Send, ExternalLink } from 'lucide-react';
+import { Phone, MessageCircle, MapPin, Mail, Send } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { SiteConfig } from '../types';
 import { DEFAULT_SITE_CONFIG } from '../constants';

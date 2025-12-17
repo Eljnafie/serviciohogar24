@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Search, X, ArrowRight, FileText, Wrench } from 'lucide-react';
 import { dataService } from '../services/dataService';
 import { ServiceItem, BlogPost } from '../types';

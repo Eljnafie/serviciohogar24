@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { PhoneCall, X, Clock, CheckCircle } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 const CallbackWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [phone, setPhone] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success'>('idle');
-  const { t } = useTranslation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

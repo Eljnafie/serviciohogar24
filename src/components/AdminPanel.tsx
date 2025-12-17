@@ -3,10 +3,31 @@ import { useTranslation } from 'react-i18next';
 import { dataService } from '../services/dataService';
 import { BlogPost, SiteConfig, ServiceItem, FAQItem } from '../types';
 import { DEFAULT_SITE_CONFIG } from '../constants';
-import { Trash2, Plus, LogOut, Loader2, Save, ArrowLeft, Search, Check, X, Image as ImageIcon, Globe, Heading, Wand2, Bot, Sparkles, RefreshCw, Settings, Euro, Phone as PhoneIcon, Wrench, HelpCircle, Facebook, Instagram, Twitter, MessageSquare, LayoutTemplate, CheckCircle2 } from 'lucide-react';
+import { Trash2, Plus, LogOut, Loader2, Save, ArrowLeft, Search, Check, X, Image as ImageIcon, Globe, Heading, Wand2, Bot, Sparkles, RefreshCw, Settings, Euro, Phone as PhoneIcon, Wrench, HelpCircle, CheckCircle2 } from 'lucide-react';
 import { GoogleGenAI, Type } from "@google/genai";
 import SEO from './SEO';
 import { useToast } from '../context/ToastContext';
+
+// Helper to safely access API Key in browser environments
+const getApiKey = () => {
+  try {
+    // @ts-ignore
+    if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GEMINI_API_KEY) {
+      // @ts-ignore
+      return import.meta.env.VITE_GEMINI_API_KEY;
+    }
+  } catch (e) {}
+  
+  // Fallback for other environments safely
+  try {
+    const w = window as any;
+    if (w.process && w.process.env && w.process.env.API_KEY) {
+        return w.process.env.API_KEY;
+    }
+  } catch (e) {}
+  
+  return '';
+};
 
 const AdminPanel: React.FC = () => {
   const { t } = useTranslation();
@@ -266,8 +287,8 @@ const AdminPanel: React.FC = () => {
   const handleGenerateWithAi = async () => {
     setIsGeneratingAi(true);
     try {
-        const apiKey = process.env.API_KEY;
-        if (!apiKey) throw new Error("Falta la API Key (process.env.API_KEY)");
+        const apiKey = getApiKey();
+        if (!apiKey) throw new Error("Falta la API Key (VITE_GEMINI_API_KEY o API_KEY)");
         
         const ai = new GoogleGenAI({ apiKey });
         const response = await ai.models.generateContent({
@@ -328,7 +349,7 @@ const AdminPanel: React.FC = () => {
         let altText = imagePrompt;
         
         try {
-             const apiKey = process.env.API_KEY;
+             const apiKey = getApiKey();
              if (apiKey) {
                 const ai = new GoogleGenAI({ apiKey });
                 const response = await ai.models.generateContent({ 
@@ -403,8 +424,26 @@ const AdminPanel: React.FC = () => {
                          </div>
                      </div>
                      
-                     {/* ... (Rest of settings form remains visually identical, just logic changed to use toasts) ... */}
-                     
+                     {/* Redes Sociales */}
+                     <div className="bg-white p-6 rounded-xl shadow border border-slate-100">
+                         <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 border-b pb-2"><Settings size={20}/> Redes Sociales</h2>
+                         <div className="grid md:grid-cols-3 gap-4">
+                            <div className="flex items-center gap-2">
+                                <span className="font-bold text-blue-600">FB</span>
+                                <input className="w-full border p-2 rounded" placeholder="Facebook URL" value={siteConfig.social?.facebook || ''} onChange={(e) => setSiteConfig({...siteConfig, social: {...(siteConfig.social || { facebook: '', instagram: '', twitter: '' }), facebook: e.target.value}})} />
+                            </div>
+                             <div className="flex items-center gap-2">
+                                <span className="font-bold text-pink-600">IG</span>
+                                <input className="w-full border p-2 rounded" placeholder="Instagram URL" value={siteConfig.social?.instagram || ''} onChange={(e) => setSiteConfig({...siteConfig, social: {...(siteConfig.social || { facebook: '', instagram: '', twitter: '' }), instagram: e.target.value}})} />
+                            </div>
+                             <div className="flex items-center gap-2">
+                                <span className="font-bold text-sky-500">TW</span>
+                                <input className="w-full border p-2 rounded" placeholder="Twitter URL" value={siteConfig.social?.twitter || ''} onChange={(e) => setSiteConfig({...siteConfig, social: {...(siteConfig.social || { facebook: '', instagram: '', twitter: '' }), twitter: e.target.value}})} />
+                            </div>
+                         </div>
+                     </div>
+
+                     {/* Precios */}
                      <div className="bg-white p-6 rounded-xl shadow border border-slate-100">
                          <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 border-b pb-2"><Euro size={20}/> Precios Base</h2>
                          <div className="grid md:grid-cols-3 gap-4">
@@ -425,7 +464,6 @@ const AdminPanel: React.FC = () => {
              </div>
           )}
 
-          {/* ... (Services and FAQs Views remain largely same but with addToast calls injected above) ... */}
           {view === 'services' && (
             <div className="max-w-6xl mx-auto px-4 py-8">
                 <div className="flex justify-between items-center mb-8">
@@ -460,10 +498,25 @@ const AdminPanel: React.FC = () => {
                                         <input type="number" className="w-full p-2 border rounded font-bold" value={service.price} onChange={(e) => handleServiceChange(service.id, 'price', Number(e.target.value))} />
                                     </div>
                                 </div>
-                                {/* ... rest of service fields ... */}
+                                <div>
+                                    <label className="text-xs font-bold text-slate-500 uppercase">Descripción</label>
+                                    <textarea rows={3} className="w-full p-2 border rounded text-sm text-slate-600" value={service.description} onChange={(e) => handleServiceChange(service.id, 'description', e.target.value)} />
+                                </div>
+                                <div>
+                                     <label className="text-xs font-bold text-slate-500 uppercase">Icono (Nombre Lucide)</label>
+                                     <select className="w-full p-2 border rounded bg-white text-sm" value={service.icon} onChange={(e) => handleServiceChange(service.id, 'icon', e.target.value)}>
+                                         <option value="Droplets">Fontanería (Droplets)</option>
+                                         <option value="Zap">Electricidad (Zap)</option>
+                                         <option value="Key">Cerrajería (Key)</option>
+                                         <option value="Thermometer">Climatización (Thermometer)</option>
+                                         <option value="Flame">Calefacción (Flame)</option>
+                                         <option value="Wrench">General (Wrench)</option>
+                                     </select>
+                                </div>
                             </div>
                         </div>
                     ))}
+                    {services.length === 0 && <div className="text-center py-12 text-slate-400">No hay servicios. Añade uno nuevo.</div>}
                 </div>
             </div>
           )}
@@ -478,9 +531,8 @@ const AdminPanel: React.FC = () => {
                         <button onClick={saveFaqs} className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-green-700">{loading ? <Loader2 className="animate-spin"/> : <Save/>} Guardar</button>
                     </div>
                 </div>
-                {/* ... existing faq list ... */}
                 <div className="space-y-4">
-                    {faqs.map((faq, index) => (
+                    {faqs.map((faq) => (
                         <div key={faq.id} className="bg-white p-4 rounded-xl shadow border border-slate-100 relative group">
                             <button onClick={() => deleteFaq(faq.id)} className="absolute top-4 right-4 text-slate-300 hover:text-red-500"><Trash2 size={18}/></button>
                             <div className="pr-10 space-y-3">
@@ -501,7 +553,6 @@ const AdminPanel: React.FC = () => {
 
           {view === 'list' && (
             <div className="max-w-6xl mx-auto px-4 py-8">
-                {/* ... Dashboard List View ... */}
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold text-slate-800">{t('admin_dashboard')}</h1>
                     <div className="flex items-center gap-2">
@@ -550,7 +601,6 @@ const AdminPanel: React.FC = () => {
 
           {(view === 'create' || view === 'edit') && (
             <div className="max-w-7xl mx-auto px-4 py-8 relative">
-                {/* ... Blog Editor ... */}
                 <div className="flex justify-between items-center mb-6">
                     <button onClick={() => setView('list')} className="flex items-center gap-2 text-slate-500 font-bold"><ArrowLeft size={20} /> Volver</button>
                     <div className="flex gap-3">

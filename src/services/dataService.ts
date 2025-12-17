@@ -30,13 +30,13 @@ const getInitialServices = (): ServiceItem[] => {
 
     // Hydrate from constants
     // @ts-ignore
-    const t = TRANSLATIONS.es.translation;
+    const t = TRANSLATIONS.es.translation as Record<string, string>;
     return MOCK_SERVICES.map(s => ({
         ...s,
-        title: t[s.titleKey] || s.titleKey,
-        description: t[s.descriptionKey] || s.descriptionKey,
+        title: (s.titleKey && t[s.titleKey]) ? t[s.titleKey] : s.title,
+        description: (s.descriptionKey && t[s.descriptionKey]) ? t[s.descriptionKey] : s.description,
         // @ts-ignore
-        price: PRICING_CONFIG.services[s.id] || 0
+        price: PRICING_CONFIG.services[s.id as keyof typeof PRICING_CONFIG.services] || 0
     }));
 };
 
@@ -47,11 +47,11 @@ const getInitialFAQs = (): FAQItem[] => {
     } catch (e) {}
 
     // @ts-ignore
-    const t = TRANSLATIONS.es.translation;
+    const t = TRANSLATIONS.es.translation as Record<string, string>;
     return MOCK_FAQS.map((f, index) => ({
         id: `faq_${index}`,
-        question: t[f.questionKey] || f.questionKey,
-        answer: t[f.answerKey] || f.answerKey
+        question: (f.questionKey && t[f.questionKey]) || f.questionKey,
+        answer: (f.answerKey && t[f.answerKey]) || f.answerKey
     }));
 };
 

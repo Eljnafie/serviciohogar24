@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { dataService } from '../services/dataService';
 import { BlogPost } from '../types';
@@ -7,7 +6,6 @@ import { Calendar, Tag } from 'lucide-react';
 import Skeleton from './Skeleton';
 
 const Blog: React.FC = () => {
-  const { t } = useTranslation();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 

@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import ScrollToTop from './components/ScrollToTop';
 import CookieConsent from './components/CookieConsent';
@@ -44,7 +44,7 @@ const App: React.FC = () => {
               <Route path="zona/:zone/:serviceSlug" element={<ServiceZone />} />
               <Route path="cobertura" element={<CoverageDirectory />} />
               <Route path="admin" element={<AdminPanel />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
         </Suspense>

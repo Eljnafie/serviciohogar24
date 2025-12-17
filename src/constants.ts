@@ -1,5 +1,4 @@
-
-import { ServiceItem, BlogPost, Testimonial, FAQItem, SiteConfig } from './types';
+import { ServiceItem, BlogPost, Testimonial, SiteConfig } from './types';
 
 export const COLORS = {
   primary: '#1D4ED8', // blue-700
@@ -7,9 +6,16 @@ export const COLORS = {
 };
 
 export const BARCELONA_ZONES = [
-  'Eixample', 'Gràcia', 'Sants-Montjuïc', 'Les Corts', 
-  'Sarrià-Sant Gervasi', 'Ciutat Vella', 'Horta-Guinardó', 
-  'Nou Barris', 'Sant Andreu', 'Sant Martí'
+  'Ciutat Vella',
+  'Eixample',
+  'Sants-Montjuïc',
+  'Les Corts',
+  'Sarrià-Sant Gervasi',
+  'Gràcia',
+  'Horta-Guinardó',
+  'Nou Barris',
+  'Sant Andreu',
+  'Sant Martí'
 ];
 
 export const DEFAULT_SITE_CONFIG: SiteConfig = {
@@ -43,9 +49,9 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
 };
 
 export const PRICING_CONFIG = {
-  baseFee: DEFAULT_SITE_CONFIG.pricing.baseFee,
-  urgencyFee: DEFAULT_SITE_CONFIG.pricing.urgencyFee,
-  nightFee: DEFAULT_SITE_CONFIG.pricing.nightFee,
+  baseFee: DEFAULT_SITE_CONFIG.pricing.baseFee, // Default fallback
+  urgencyFee: DEFAULT_SITE_CONFIG.pricing.urgencyFee, // Default fallback
+  nightFee: DEFAULT_SITE_CONFIG.pricing.nightFee, // Default fallback
   taxRate: 0.21,
   services: {
     '1': 55, // Plumbing base
@@ -62,6 +68,7 @@ export const MOCK_SERVICES: ServiceItem[] = [
     titleKey: 'service_plumbing',
     descriptionKey: 'service_plumbing_desc',
     icon: 'Droplets',
+    // Image: Professional plumber fixing a sink with clear tools
     imageUrl: 'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?auto=format&fit=crop&w=800&q=80',
     title: '',
     description: '',
@@ -71,6 +78,7 @@ export const MOCK_SERVICES: ServiceItem[] = [
     titleKey: 'service_electricity',
     descriptionKey: 'service_electricity_desc',
     icon: 'Zap',
+    // Image: Electrical panel work, clean and technical
     imageUrl: 'https://images.unsplash.com/photo-1555963966-926031914a8a?auto=format&fit=crop&w=800&q=80',
     title: '',
     description: '',
@@ -80,6 +88,7 @@ export const MOCK_SERVICES: ServiceItem[] = [
     titleKey: 'service_locksmith',
     descriptionKey: 'service_locksmith_desc',
     icon: 'Key',
+    // Image: Modern lock installation
     imageUrl: 'https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=800&q=80',
     title: '',
     description: '',
@@ -89,6 +98,7 @@ export const MOCK_SERVICES: ServiceItem[] = [
     titleKey: 'service_hvac',
     descriptionKey: 'service_hvac_desc',
     icon: 'Thermometer',
+    // Image: Modern AC unit maintenance
     imageUrl: 'https://images.unsplash.com/photo-1631557026770-49271607730d?auto=format&fit=crop&w=800&q=80',
     title: '',
     description: '',
@@ -98,6 +108,7 @@ export const MOCK_SERVICES: ServiceItem[] = [
     titleKey: 'service_heater',
     descriptionKey: 'service_heater_desc',
     icon: 'Flame',
+    // Image: Boiler system details
     imageUrl: 'https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?auto=format&fit=crop&w=800&q=80',
     title: '',
     description: '',
@@ -192,6 +203,7 @@ export const INITIAL_BLOG_POSTS: BlogPost[] = [
   },
 ];
 
+// Intelligent Booking Configuration
 export const BOOKING_STEPS = [
     { id: 1, key: 'step_service' },
     { id: 2, key: 'step_details' },
@@ -220,7 +232,7 @@ export const SERVICE_QUESTIONS = {
     ],
     '5': [ // Heater
         { id: 'q_no_hot_water', labelKey: 'q_no_hot_water', type: 'boolean', urgent: true },
-        { id: 'q_gas_smell', labelKey: 'q_gas_smell', type: 'boolean', urgent: true },
+        { id: 'q_gas_smell', labelKey: 'q_gas_smell', type: 'boolean', urgent: true }, // CRITICAL
     ]
 };
 
@@ -237,14 +249,19 @@ export const TRANSLATIONS = {
       hero_badge: 'Barcelona - Servicio 24H',
       hero_feat_1_title: 'Respuesta en 60 min',
       hero_feat_1_desc: 'Tiempo medio de llegada en Barcelona',
+      
+      // Updated warranty text to be less binding
       hero_feat_2_title: 'Servicio Profesional',
       hero_feat_2_desc: 'Calidad y eficiencia asegurada en cada trabajo',
+      
       hero_feat_3_title: 'Todos los Barrios',
       hero_feat_3_desc: 'Eixample, Gràcia, Sants, Poblenou...',
       topbar_24h: 'SERVICIO 24H',
       cta_call: 'Llamar ahora',
       cta_whatsapp: 'WhatsApp Urgente',
       cta_budget: 'Calcular Presupuesto Online',
+      
+      // Updated Service Descriptions (More attractive)
       service_plumbing: 'Fontanería Urgente',
       service_plumbing_desc: 'Solución inmediata a fugas de agua, desatascos de tuberías y reparación de grifería. Servicio 24h para evitar daños mayores en su hogar.',
       service_electricity: 'Electricistas Autorizados',
@@ -254,11 +271,16 @@ export const TRANSLATIONS = {
       service_hvac: 'Climatización y Aire',
       service_hvac_desc: 'Reparación, carga de gas y mantenimiento de aire acondicionado. Recupere el confort térmico de su hogar hoy mismo.',
       service_heater: 'Calderas y Calentadores',
-      service_heater_desc: 'Expertos en calderas de gas y calentadores eléctricos. Reparación de averías y revisiones preventivas para asegurar agua caliente.',
+      service_heater_desc: 'Experts in calderas de gas y calentadores eléctricos. Reparación de averías y revisiones preventivas para asegurar agua caliente.',
+      
       req_service: 'Solicitar servicio',
       latest_news: 'Últimas noticias',
+      
+      // Updated Blog Text
       home_blog_title: 'Consejos de Expertos',
       home_blog_subtitle: 'Manténgase informado con nuestros artículos sobre mantenimiento, ahorro energético y soluciones para su hogar.',
+      
+      // FAQ
       faq_title: 'Preguntas Frecuentes',
       faq_q1: '¿Cuánto tardan en llegar a mi domicilio?',
       faq_a1: 'Nuestro tiempo medio de llegada en Barcelona y área metropolitana es de 30 a 60 minutos para servicios urgentes.',
@@ -268,6 +290,7 @@ export const TRANSLATIONS = {
       faq_a3: 'Absolutamente. Nuestro servicio de urgencias está operativo las 24 horas, los 365 días del año.',
       faq_q4: '¿Cobran por el presupuesto?',
       faq_a4: 'Ofrecemos presupuestos gratuitos y sin compromiso en horario laboral estándar. Para urgencias, consulte nuestras tarifas.',
+
       testimonials_title: 'Lo que dicen nuestros clientes',
       contact_title: 'Contáctanos',
       form_name: 'Nombre completo',
@@ -287,6 +310,8 @@ export const TRANSLATIONS = {
       admin_excerpt_ph: 'Resumen corto (Meta description)',
       admin_content_ph: 'Contenido completo...',
       admin_save: 'Publicar Artículo',
+      
+      // Booking Wizard
       book_title: 'Reserva Inteligente',
       book_subtitle: 'Diagnóstico rápido y cita en 3 pasos',
       step_service: 'Servicio',
@@ -316,24 +341,28 @@ export const TRANSLATIONS = {
       book_morning: 'Mañana (09:00 - 13:00)',
       book_afternoon: 'Tarde (14:00 - 18:00)',
       book_evening: 'Noche (19:00 - 22:00)',
-      book_summary: 'Resumen de Cita',
-      book_success: '¡Cita Confirmada!',
+      book_summary: 'Appointment Summary',
+      book_success: 'Appointment Confirmed!',
       book_success_msg: 'Hemos enviado los detalles a tu WhatsApp.',
       btn_next: 'Siguiente',
       btn_back: 'Atrás',
       btn_confirm: 'Confirmar Cita',
-      budget_est_title: 'Presupuesto Estimado',
+      
+      // Budget Calculator
+      budget_est_title: 'Estimated Budget',
       budget_range: 'Rango de precio',
-      budget_item_base: 'Desplazamiento',
-      budget_item_service: 'Servicio Base',
-      budget_item_urgency: 'Plus Urgencia',
-      budget_note: '* Precio final sujeto a valoración presencial.',
+      budget_item_base: 'Call-out Fee',
+      budget_item_service: 'Service Base',
+      budget_item_urgency: 'Urgency Fee',
+      budget_note: '* Final price subject to onsite assessment.',
+      
+      // Home Calculator
       home_budget_title: 'Calcula tu Presupuesto',
       home_budget_subtitle: 'Obtén una estimación instantánea sin compromiso.',
       home_budget_select: 'Selecciona Servicio',
       home_budget_result_label: 'Precio Estimado',
       home_budget_cta: 'Reservar Cita Ahora',
-      home_budget_legal: '*Precios sin IVA. Sujeto a valoración final.'
+      home_budget_legal: '*Prices excl. VAT. Subject to final assessment.'
     },
   },
   en: {
@@ -348,14 +377,17 @@ export const TRANSLATIONS = {
       hero_badge: 'Barcelona 24/7',
       hero_feat_1_title: '60 min Response',
       hero_feat_1_desc: 'Average arrival time in Barcelona',
+      
       hero_feat_2_title: 'Professional Service',
       hero_feat_2_desc: 'Quality and efficiency ensured in every job',
+      
       hero_feat_3_title: 'All Neighborhoods',
       hero_feat_3_desc: 'Eixample, Gràcia, Sants, Poblenou...',
       topbar_24h: '24H SERVICE',
       cta_call: 'Call Now',
       cta_whatsapp: 'Urgent WhatsApp',
       cta_budget: 'Get Online Quote',
+      
       service_plumbing: 'Urgent Plumbing',
       service_plumbing_desc: 'Immediate solution for water leaks, pipe unclogging, and faucet repair. 24h service to prevent further damage to your home.',
       service_electricity: 'Licensed Electricians',
@@ -366,10 +398,13 @@ export const TRANSLATIONS = {
       service_hvac_desc: 'Repair, gas refill, and air conditioning maintenance. Restore thermal comfort to your home today.',
       service_heater: 'Boilers & Heaters',
       service_heater_desc: 'Experts in gas boilers and electric water heaters. Repair of breakdowns and preventive checks to ensure hot water.',
+      
       req_service: 'Request Service',
       latest_news: 'Latest News',
+
       home_blog_title: 'Expert Advice',
       home_blog_subtitle: 'Stay informed with our articles on maintenance, energy saving, and home solutions.',
+
       faq_title: 'Frequently Asked Questions',
       faq_q1: 'How long does it take to arrive?',
       faq_a1: 'Our average arrival time in Barcelona and metropolitan area is 30 to 60 minutes for urgent services.',
@@ -379,6 +414,7 @@ export const TRANSLATIONS = {
       faq_a3: 'Absolutely. Our emergency service operates 24 hours a day, 365 days a year.',
       faq_q4: 'Do you charge for the quote?',
       faq_a4: 'We offer free, no-obligation quotes during standard business hours. For emergencies, please consult our rates.',
+
       testimonials_title: 'What our clients say',
       contact_title: 'Contact Us',
       form_name: 'Full Name',
@@ -398,6 +434,8 @@ export const TRANSLATIONS = {
       admin_excerpt_ph: 'Short excerpt (Meta description)',
       admin_content_ph: 'Full content...',
       admin_save: 'Publish Article',
+
+       // Booking Wizard
        book_title: 'Smart Booking',
        book_subtitle: 'Quick diagnosis and booking in 3 steps',
        step_service: 'Service',
@@ -432,18 +470,23 @@ export const TRANSLATIONS = {
        btn_next: 'Next',
        btn_back: 'Back',
        btn_confirm: 'Confirm Booking',
+       
+       // Budget Calculator
        budget_est_title: 'Estimated Budget',
        budget_range: 'Price range',
        budget_item_base: 'Call-out Fee',
        budget_item_service: 'Service Base',
        budget_item_urgency: 'Urgency Fee',
        budget_note: '* Final price subject to onsite assessment.',
+       
+       // Home Calculator
        home_budget_title: 'Calculate Budget',
        home_budget_subtitle: 'Get an instant estimate without obligation.',
        home_budget_select: 'Select Service',
        home_budget_result_label: 'Estimated Price',
        home_budget_cta: 'Book Appointment Now',
-       home_budget_legal: '*Prices excl. VAT. Subject to final assessment.'
+       home_budget_legal: '*Prices excl. VAT. Subject to final assessment.',
+       admin_search_ph: "Search service, issue or advice..."
     },
   },
 };

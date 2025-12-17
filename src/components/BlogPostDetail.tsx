@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { dataService } from '../services/dataService';
 import { BlogPost, SiteConfig } from '../types';
 import { DEFAULT_SITE_CONFIG } from '../constants';
@@ -13,7 +12,6 @@ const BlogPostDetail: React.FC = () => {
   const [config, setConfig] = useState<SiteConfig>(DEFAULT_SITE_CONFIG);
   const [loading, setLoading] = useState(true);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { t } = useTranslation();
 
   // Scroll Progress Listener
   useEffect(() => {
