@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { dataService } from '../services/dataService';
 import { BlogPost, SiteConfig, ServiceItem, FAQItem, CallbackRequest } from '../types';
 import { DEFAULT_SITE_CONFIG } from '../constants';
-import { Trash2, Plus, LogOut, Loader2, Save, ArrowLeft, Search, Check, X, Image as ImageIcon, Globe, Heading, Wand2, Bot, CheckCircle2, Sparkles, RefreshCw, Settings, Euro, Phone as PhoneIcon, Wrench, HelpCircle, User, PhoneIncoming, Clock, Scale, Facebook, Instagram, Twitter, MessageSquare, LayoutTemplate } from 'lucide-react';
+import { Trash2, Plus, LogOut, Loader2, Save, ArrowLeft, Search, Check, X, Image as ImageIcon, Globe, Heading, Wand2, Bot, CheckCircle2, Sparkles, RefreshCw, Settings, Euro, Phone as PhoneIcon, Wrench, HelpCircle, User, PhoneIncoming, Clock, Scale, Facebook, Instagram, Twitter, MessageSquare, LayoutTemplate, Upload } from 'lucide-react';
 import { GoogleGenAI, Type } from "@google/genai";
 import SEO from './SEO';
 import { useToast } from '../context/ToastContext';
@@ -301,6 +301,23 @@ const AdminPanel: React.FC = () => {
     });
     setForm({ ...form, content: formattedLines.join('\n') });
     addToast('Formato automático aplicado', 'info');
+  };
+
+  const handlePostImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+        // Simple size check (5MB)
+        if (file.size > 5000000) {
+            addToast('Imagen demasiado grande. Máximo 5MB.', 'error');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setForm({ ...form, imageUrl: reader.result as string });
+            addToast('Imagen cargada localmente', 'info');
+        };
+        reader.readAsDataURL(file);
+    }
   };
 
   const generateAiPrompt = () => {
@@ -875,10 +892,14 @@ const AdminPanel: React.FC = () => {
                 </div>
                 <div className="bg-white p-6 rounded-xl shadow border border-slate-100">
                      <div className="flex justify-between mb-2"><h3 className="font-bold flex gap-2"><ImageIcon size={18}/> Multimedia</h3><button onClick={() => setShowImageAiModal(true)} className="text-xs bg-indigo-600 text-white px-2 py-1 rounded flex gap-1"><Sparkles size={12}/> Generar IA</button></div>
-                     <div className="flex gap-4">
+                     <div className="flex gap-2">
                         <input className="flex-grow p-2 border rounded text-sm" placeholder="URL Imagen" value={form.imageUrl} onChange={(e) => setForm({...form, imageUrl: e.target.value})} />
-                        <input className="flex-grow p-2 border rounded text-sm" placeholder="Texto ALT" value={form.imageAlt} onChange={(e) => setForm({...form, imageAlt: e.target.value})} />
+                        <label className="cursor-pointer bg-slate-100 p-2 rounded hover:bg-slate-200 border border-slate-200 flex items-center justify-center w-10" title="Subir desde PC">
+                            <Upload size={20} className="text-slate-600"/>
+                            <input type="file" className="hidden" accept="image/*" onChange={handlePostImageUpload} />
+                        </label>
                      </div>
+                     <input className="w-full mt-2 p-2 border rounded text-sm" placeholder="Texto ALT" value={form.imageAlt} onChange={(e) => setForm({...form, imageAlt: e.target.value})} />
                      {form.imageUrl && <img src={form.imageUrl} className="h-32 object-cover rounded mt-4 border" />}
                 </div>
             </div>
