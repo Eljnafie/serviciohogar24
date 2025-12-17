@@ -206,7 +206,7 @@ const BlogPostDetail: React.FC = () => {
                     [&_li]:pl-1
                     [&_strong]:font-bold [&_strong]:text-slate-900
                     [&_blockquote]:border-l-4 [&_blockquote]:border-blue-500 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:my-6 [&_blockquote]:bg-blue-50 [&_blockquote]:p-4 [&_blockquote]:rounded-r-lg
-                    [&_a]:text-blue-600 [&_a]:underline [&_a]:font-bold hover:[&_a]:text-blue-800
+                    [&_a]:text-blue-600 [&_a]:underline [&_a]:font-bold [&_a:hover]:text-blue-800
                     [&_img]:rounded-xl [&_img]:shadow-md [&_img]:my-8 [&_img]:w-full [&_img]:border [&_img]:border-slate-100
                   " 
                 />

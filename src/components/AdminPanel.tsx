@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { dataService } from '../services/dataService';
 import { BlogPost, SiteConfig, ServiceItem, FAQItem, CallbackRequest } from '../types';
 import { DEFAULT_SITE_CONFIG } from '../constants';
-import { Trash2, Plus, LogOut, Loader2, Save, ArrowLeft, Search, Check, X, Image as ImageIcon, Globe, Heading, Wand2, Bot, Sparkles, RefreshCw, Settings, Euro, Phone as PhoneIcon, Wrench, HelpCircle, CheckCircle2, User, PhoneIncoming, Clock, Scale } from 'lucide-react';
+import { Trash2, Plus, LogOut, Loader2, Save, ArrowLeft, Search, Check, X, Image as ImageIcon, Globe, Heading, Wand2, Bot, CheckCircle2, Sparkles, RefreshCw, Settings, Euro, Phone as PhoneIcon, Wrench, HelpCircle, User, PhoneIncoming, Clock, Scale, Facebook, Instagram, Twitter, MessageSquare, LayoutTemplate } from 'lucide-react';
 import { GoogleGenAI, Type } from "@google/genai";
 import SEO from './SEO';
 import { useToast } from '../context/ToastContext';
@@ -306,21 +306,41 @@ const AdminPanel: React.FC = () => {
   const generateAiPrompt = () => {
       return `
       Actúa como un redactor SEO profesional especializado en SEO local para negocios de servicios del hogar.
-      OBJETIVO: Crear un artículo informativo, útil, original y evergreen, optimizado para Google.
+      
+      OBJETIVO:
+      Crear un artículo informativo, útil y optimizado para posicionar en Google en la zona de Barcelona.
+
       TEMA: "${aiTopic}"
       IDIOMA: ${form.language === 'es' ? 'Español' : 'Inglés'}.
-      UBICACIÓN: Barcelona.
-      NEGOCIO: Servicios hogar 24h.
-      REQUISITOS: 1 H1, varios H2, keywords en H1/H2/primer párrafo, min 900 palabras.
-      MENCIÓN SERVICIO: Incluir mención indirecta a asistencia 24h.
-      FORMATO JSON:
+      UBICACIÓN: Barcelona (usar términos locales como Barna, área metropolitana).
+      NEGOCIO: ServiciosHogar24 (fontanería, electricidad, cerrajería, climatización 24h).
+
+      REQUISITOS SEO OBLIGATORIOS:
+      1. Título SEO: 40-60 caracteres, atractivo.
+      2. Meta Descripción: 130-155 caracteres, persuasiva.
+      3. Estructura: NO usar H1 en el contenido. Empezar con H2. Usar párrafos cortos.
+      4. Palabras Clave: Incluir keyword principal en primer párrafo y H2.
+      5. Longitud: Mínimo 800 palabras.
+
+      ENLACES INTERNOS (CRÍTICO):
+      Debes incluir de 3 a 5 enlaces internos HTML en el texto.
+      IMPORTANTE: Usar formato HashRouter (con #) para que funcionen en la Web App:
+      - Para servicios: <a href="#/services">Nuestros servicios</a>
+      - Para contacto: <a href="#/contact">Contáctanos</a>
+      - Para reservas: <a href="#/booking">Pedir presupuesto</a>
+      - Para blog: <a href="#/blog">Más consejos</a>
+      - Para inicio: <a href="#/">ServicioHogar24</a>
+      
+      *Los anchor text deben ser naturales dentro de la frase.*
+
+      FORMATO JSON RESPUESTA:
       {
-        "seoTitle": "Título SEO",
-        "metaDescription": "Meta descripción",
-        "slug": "url-slug",
-        "focusKeyword": "keyword",
-        "content": "HTML STRING COMPLETO",
-        "imageAlt": "Texto ALT"
+        "seoTitle": "...",
+        "metaDescription": "...",
+        "slug": "...",
+        "focusKeyword": "...",
+        "content": "... HTML del cuerpo (con <h2>, <p>, <ul>, <a>) ...",
+        "imageAlt": "..."
       }
       `;
   };
@@ -545,7 +565,7 @@ const AdminPanel: React.FC = () => {
       );
   }
 
-  // --- GENERIC VIEW HANDLERS (Same as before) ---
+  // --- GENERIC VIEW HANDLERS ---
   if (view === 'settings') {
     return (
         <div className="max-w-5xl mx-auto px-4 py-8">
@@ -555,6 +575,7 @@ const AdminPanel: React.FC = () => {
             </div>
             
             <div className="grid gap-8">
+                 {/* Contacto */}
                  <div className="bg-white p-6 rounded-xl shadow border border-slate-100">
                      <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 border-b pb-2"><PhoneIcon size={20}/> Datos de Contacto</h2>
                      <div className="grid md:grid-cols-2 gap-4 mb-4">
@@ -578,23 +599,53 @@ const AdminPanel: React.FC = () => {
                         </div>
                      </div>
                  </div>
-                 
+
                  {/* Redes Sociales */}
                  <div className="bg-white p-6 rounded-xl shadow border border-slate-100">
-                     <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 border-b pb-2"><Settings size={20}/> Redes Sociales</h2>
+                     <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 border-b pb-2"><MessageSquare size={20}/> Redes Sociales</h2>
                      <div className="grid md:grid-cols-3 gap-4">
                         <div className="flex items-center gap-2">
-                            <span className="font-bold text-blue-600">FB</span>
+                            <Facebook size={18} className="text-blue-600"/>
                             <input className="w-full border p-2 rounded" placeholder="Facebook URL" value={siteConfig.social?.facebook || ''} onChange={(e) => setSiteConfig({...siteConfig, social: {...(siteConfig.social || { facebook: '', instagram: '', twitter: '' }), facebook: e.target.value}})} />
                         </div>
                          <div className="flex items-center gap-2">
-                            <span className="font-bold text-pink-600">IG</span>
+                            <Instagram size={18} className="text-pink-600"/>
                             <input className="w-full border p-2 rounded" placeholder="Instagram URL" value={siteConfig.social?.instagram || ''} onChange={(e) => setSiteConfig({...siteConfig, social: {...(siteConfig.social || { facebook: '', instagram: '', twitter: '' }), instagram: e.target.value}})} />
                         </div>
                          <div className="flex items-center gap-2">
-                            <span className="font-bold text-sky-500">TW</span>
+                            <Twitter size={18} className="text-sky-500"/>
                             <input className="w-full border p-2 rounded" placeholder="Twitter URL" value={siteConfig.social?.twitter || ''} onChange={(e) => setSiteConfig({...siteConfig, social: {...(siteConfig.social || { facebook: '', instagram: '', twitter: '' }), twitter: e.target.value}})} />
                         </div>
+                     </div>
+                 </div>
+
+                 {/* Textos Web */}
+                 <div className="bg-white p-6 rounded-xl shadow border border-slate-100">
+                     <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 border-b pb-2"><LayoutTemplate size={20}/> Textos y Portada</h2>
+                     <div className="space-y-4 mb-6">
+                        <div>
+                            <label className="text-xs font-bold text-slate-500 uppercase">Título Principal (H1)</label>
+                            <input className="w-full border p-2 rounded" value={siteConfig.texts.heroTitle} onChange={(e) => setSiteConfig({...siteConfig, texts: {...siteConfig.texts, heroTitle: e.target.value}})} />
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold text-slate-500 uppercase">Subtítulo</label>
+                            <input className="w-full border p-2 rounded" value={siteConfig.texts.heroSubtitle} onChange={(e) => setSiteConfig({...siteConfig, texts: {...siteConfig.texts, heroSubtitle: e.target.value}})} />
+                        </div>
+                     </div>
+                     <h3 className="font-bold text-sm text-slate-600 mb-2 border-t pt-4">Destacados (Iconos Portada)</h3>
+                     <div className="grid md:grid-cols-3 gap-4">
+                         <div className="p-3 border rounded bg-slate-50">
+                             <input className="w-full border p-1 rounded text-sm font-bold mb-1" value={siteConfig.texts.feature1Title || ''} onChange={(e) => setSiteConfig({...siteConfig, texts: {...siteConfig.texts, feature1Title: e.target.value}})} placeholder="Título 1"/>
+                             <textarea rows={2} className="w-full border p-1 rounded text-xs" value={siteConfig.texts.feature1Desc || ''} onChange={(e) => setSiteConfig({...siteConfig, texts: {...siteConfig.texts, feature1Desc: e.target.value}})} placeholder="Desc 1"/>
+                         </div>
+                         <div className="p-3 border rounded bg-slate-50">
+                             <input className="w-full border p-1 rounded text-sm font-bold mb-1" value={siteConfig.texts.feature2Title || ''} onChange={(e) => setSiteConfig({...siteConfig, texts: {...siteConfig.texts, feature2Title: e.target.value}})} placeholder="Título 2"/>
+                             <textarea rows={2} className="w-full border p-1 rounded text-xs" value={siteConfig.texts.feature2Desc || ''} onChange={(e) => setSiteConfig({...siteConfig, texts: {...siteConfig.texts, feature2Desc: e.target.value}})} placeholder="Desc 2"/>
+                         </div>
+                         <div className="p-3 border rounded bg-slate-50">
+                             <input className="w-full border p-1 rounded text-sm font-bold mb-1" value={siteConfig.texts.feature3Title || ''} onChange={(e) => setSiteConfig({...siteConfig, texts: {...siteConfig.texts, feature3Title: e.target.value}})} placeholder="Título 3"/>
+                             <textarea rows={2} className="w-full border p-1 rounded text-xs" value={siteConfig.texts.feature3Desc || ''} onChange={(e) => setSiteConfig({...siteConfig, texts: {...siteConfig.texts, feature3Desc: e.target.value}})} placeholder="Desc 3"/>
+                         </div>
                      </div>
                  </div>
 
@@ -612,6 +663,7 @@ const AdminPanel: React.FC = () => {
                         </div>
                      </div>
                  </div>
+                 
                  <div className="sticky bottom-4 flex justify-end">
                      <button onClick={handleSaveConfig} disabled={loading} className="bg-blue-700 text-white px-8 py-3 rounded-xl font-bold flex gap-2 shadow-2xl hover:scale-105 transition">{loading ? <Loader2 className="animate-spin" /> : <Save />} Guardar Configuración</button>
                  </div>
@@ -792,8 +844,7 @@ const AdminPanel: React.FC = () => {
       );
   }
 
-  // ... (rest of the file remains unchanged, blog editor section)
-  
+  // --- BLOG EDITOR VIEW ---
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 relative">
         <div className="flex justify-between items-center mb-6">
