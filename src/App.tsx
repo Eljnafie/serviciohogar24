@@ -16,6 +16,7 @@ const BookingWizard = lazy(() => import('./components/BookingWizard'));
 const BlogPostDetail = lazy(() => import('./components/BlogPostDetail'));
 const ServiceZone = lazy(() => import('./components/ServiceZone'));
 const CoverageDirectory = lazy(() => import('./components/CoverageDirectory'));
+const LegalPage = lazy(() => import('./components/LegalPage'));
 const NotFound = lazy(() => import('./components/NotFound'));
 
 // Loading Spinner
@@ -43,6 +44,12 @@ const App: React.FC = () => {
               <Route path="blog/:slug" element={<BlogPostDetail />} />
               <Route path="zona/:zone/:serviceSlug" element={<ServiceZone />} />
               <Route path="cobertura" element={<CoverageDirectory />} />
+              
+              {/* Legal Routes */}
+              <Route path="aviso-legal" element={<LegalPage type="legal" />} />
+              <Route path="politica-privacidad" element={<LegalPage type="privacy" />} />
+              <Route path="politica-cookies" element={<LegalPage type="cookies" />} />
+
               <Route path="admin" element={<AdminPanel />} />
               <Route path="*" element={<NotFound />} />
             </Route>

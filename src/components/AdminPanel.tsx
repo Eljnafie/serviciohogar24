@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { dataService } from '../services/dataService';
 import { BlogPost, SiteConfig, ServiceItem, FAQItem, CallbackRequest } from '../types';
 import { DEFAULT_SITE_CONFIG } from '../constants';
-import { Trash2, Plus, LogOut, Loader2, Save, ArrowLeft, Search, Check, X, Image as ImageIcon, Globe, Heading, Wand2, Bot, Sparkles, RefreshCw, Settings, Euro, Phone as PhoneIcon, Wrench, HelpCircle, CheckCircle2, User, PhoneIncoming, Clock } from 'lucide-react';
+import { Trash2, Plus, LogOut, Loader2, Save, ArrowLeft, Search, Check, X, Image as ImageIcon, Globe, Heading, Wand2, Bot, Sparkles, RefreshCw, Settings, Euro, Phone as PhoneIcon, Wrench, HelpCircle, CheckCircle2, User, PhoneIncoming, Clock, Scale } from 'lucide-react';
 import { GoogleGenAI, Type } from "@google/genai";
 import SEO from './SEO';
 import { useToast } from '../context/ToastContext';
@@ -272,7 +272,7 @@ const AdminPanel: React.FC = () => {
     setLoading(true);
     await dataService.updateSiteConfig(siteConfig);
     setLoading(false);
-    addToast('Configuración global actualizada', 'success');
+    addToast('Configuración guardada', 'success');
   };
 
   // --- EDITOR HELPERS (Tags, Autoformat, AI) ---
@@ -427,6 +427,47 @@ const AdminPanel: React.FC = () => {
         </div>
       </div>
     );
+  }
+
+  // --- VIEW: LEGAL EDIT ---
+  if (view === 'legal') {
+      return (
+        <div className="max-w-5xl mx-auto px-4 py-8">
+            <div className="flex justify-between items-center mb-8">
+                <button onClick={() => setView('list')} className="text-slate-500 hover:text-slate-800"><ArrowLeft size={24} /></button>
+                <h1 className="text-3xl font-bold text-slate-800 flex items-center gap-2"><Scale className="text-blue-600"/> Textos Legales</h1>
+            </div>
+            <div className="grid gap-8">
+                <div className="bg-white p-6 rounded-xl shadow border border-slate-100">
+                    <h3 className="font-bold mb-2">Aviso Legal</h3>
+                    <textarea 
+                        className="w-full h-40 p-3 border rounded font-mono text-sm" 
+                        value={siteConfig.legal?.legalNotice || ''} 
+                        onChange={(e) => setSiteConfig({...siteConfig, legal: {...(siteConfig.legal || { legalNotice:'', privacyPolicy:'', cookiesPolicy:'' }), legalNotice: e.target.value}})}
+                    />
+                </div>
+                <div className="bg-white p-6 rounded-xl shadow border border-slate-100">
+                    <h3 className="font-bold mb-2">Política de Privacidad</h3>
+                    <textarea 
+                        className="w-full h-40 p-3 border rounded font-mono text-sm" 
+                        value={siteConfig.legal?.privacyPolicy || ''} 
+                        onChange={(e) => setSiteConfig({...siteConfig, legal: {...(siteConfig.legal || { legalNotice:'', privacyPolicy:'', cookiesPolicy:'' }), privacyPolicy: e.target.value}})}
+                    />
+                </div>
+                <div className="bg-white p-6 rounded-xl shadow border border-slate-100">
+                    <h3 className="font-bold mb-2">Política de Cookies</h3>
+                    <textarea 
+                        className="w-full h-40 p-3 border rounded font-mono text-sm" 
+                        value={siteConfig.legal?.cookiesPolicy || ''} 
+                        onChange={(e) => setSiteConfig({...siteConfig, legal: {...(siteConfig.legal || { legalNotice:'', privacyPolicy:'', cookiesPolicy:'' }), cookiesPolicy: e.target.value}})}
+                    />
+                </div>
+                <div className="sticky bottom-4 flex justify-end">
+                     <button onClick={handleSaveConfig} disabled={loading} className="bg-blue-700 text-white px-8 py-3 rounded-xl font-bold flex gap-2 shadow-2xl hover:scale-105 transition">{loading ? <Loader2 className="animate-spin" /> : <Save />} Guardar Legal</button>
+                 </div>
+            </div>
+        </div>
+      );
   }
 
   // --- VIEW: PROFILE SETTINGS ---
@@ -690,6 +731,9 @@ const AdminPanel: React.FC = () => {
                     <button onClick={() => setView('settings')} className="flex items-center gap-2 bg-white text-slate-700 px-4 py-2 rounded-lg border hover:bg-slate-50 hover:text-slate-900 font-bold transition">
                         <Settings size={18} /> Config
                     </button>
+                    <button onClick={() => setView('legal')} className="flex items-center gap-2 bg-white text-slate-700 px-4 py-2 rounded-lg border hover:bg-slate-50 hover:text-slate-900 font-bold transition">
+                        <Scale size={18} /> Legal
+                    </button>
                     <button onClick={() => setView('profile')} className="flex items-center gap-2 bg-white text-slate-500 hover:text-blue-600 px-3 py-2 rounded-lg border ml-2">
                         <User size={18} />
                     </button>
@@ -748,7 +792,8 @@ const AdminPanel: React.FC = () => {
       );
   }
 
-  // --- BLOG EDITOR (Create/Edit) ---
+  // ... (rest of the file remains unchanged, blog editor section)
+  
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 relative">
         <div className="flex justify-between items-center mb-6">

@@ -1,4 +1,5 @@
-import { ServiceItem, BlogPost, Testimonial, SiteConfig } from './types';
+
+import { ServiceItem, BlogPost, Testimonial, FAQItem, SiteConfig } from './types';
 
 export const COLORS = {
   primary: '#1D4ED8', // blue-700
@@ -45,6 +46,56 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
     feature2Desc: 'Calidad y eficiencia asegurada en cada trabajo',
     feature3Title: 'Todos los Barrios',
     feature3Desc: 'Eixample, Gràcia, Sants, Poblenou...'
+  },
+  legal: {
+    legalNotice: `
+      <h2>1. Datos Identificativos</h2>
+      <p>En cumplimiento con el deber de información recogido en artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico, a continuación se reflejan los siguientes datos: la empresa titular de dominio web es ServicioHogar24 (en adelante ServicioHogar24), con domicilio a estos efectos en Carrer de Mallorca, Barcelona.</p>
+      
+      <h2>2. Usuarios</h2>
+      <p>El acceso y/o uso de este portal de ServicioHogar24 atribuye la condición de USUARIO, que acepta, desde dicho acceso y/o uso, las Condiciones Generales de Uso aquí reflejadas.</p>
+      
+      <h2>3. Uso del Portal</h2>
+      <p>ServicioHogar24.com proporciona el acceso a multitud de informaciones, servicios, programas o datos (en adelante, "los contenidos") en Internet pertenecientes a ServicioHogar24 o a sus licenciantes a los que el USUARIO pueda tener acceso. El USUARIO asume la responsabilidad del uso del portal.</p>
+      
+      <h2>4. Propiedad Intelectual e Industrial</h2>
+      <p>ServicioHogar24 por sí o como cesionaria, es titular de todos los derechos de propiedad intelectual e industrial de su página web, así como de los elementos contenidos en la misma.</p>
+      
+      <h2>5. Exclusión de Garantías y Responsabilidad</h2>
+      <p>ServicioHogar24 no se hace responsable, en ningún caso, de los daños y perjuicios de cualquier naturaleza que pudieran ocasionar, a título enunciativo: errores u omisiones en los contenidos, falta de disponibilidad del portal o la transmisión de virus o programas maliciosos o lesivos en los contenidos, a pesar de haber adoptado todas las medidas tecnológicas necesarias para evitarlo.</p>
+    `,
+    privacyPolicy: `
+      <h2>1. Responsable del Tratamiento</h2>
+      <p>Los datos de carácter personal que se pudieran recabar directamente del interesado serán tratados de forma confidencial y quedarán incorporados a la correspondiente actividad de tratamiento titularidad de ServicioHogar24.</p>
+      
+      <h2>2. Finalidad</h2>
+      <p>La finalidad del tratamiento de los datos corresponde a la gestión de las solicitudes de servicios de reparaciones del hogar, gestión de presupuestos y comunicaciones comerciales relacionadas con nuestros servicios.</p>
+      
+      <h2>3. Legitimación</h2>
+      <p>El tratamiento de sus datos se realiza para el cumplimiento de la relación contractual o precontractual solicitada por el usuario (presupuestos, reparaciones).</p>
+      
+      <h2>4. Conservación de datos</h2>
+      <p>Los datos personales proporcionados se conservarán durante el tiempo necesario para cumplir con la finalidad para la que se recaban y para determinar las posibles responsabilidades que se pudieran derivar de la finalidad.</p>
+      
+      <h2>5. Comunicación de datos</h2>
+      <p>Con carácter general no se comunicarán datos personales a terceros, salvo obligación legal o cuando sea necesario para la prestación del servicio (ej. técnicos autónomos colaboradores).</p>
+      
+      <h2>6. Derechos de los interesados</h2>
+      <p>Cualquier persona tiene derecho a obtener confirmación sobre los tratamientos que de sus datos que se llevan a cabo por ServicioHogar24. Puede ejercer sus derechos de acceso, rectificación, supresión y portabilidad de sus datos, de limitación y oposición a su tratamiento, así como a no ser objeto de decisiones basadas únicamente en el tratamiento automatizado de sus datos, ante la dirección de correo electrónico indicada en la sección de contacto.</p>
+    `,
+    cookiesPolicy: `
+      <h2>1. ¿Qué son las cookies?</h2>
+      <p>Una cookie es un fichero que se descarga en su ordenador al acceder a determinadas páginas web. Las cookies permiten a una página web, entre otras cosas, almacenar y recuperar información sobre los hábitos de navegación de un usuario o de su equipo y, dependiendo de la información que contengan y de la forma en que utilice su equipo, pueden utilizarse para reconocer al usuario.</p>
+      
+      <h2>2. Tipos de cookies que utiliza esta web</h2>
+      <ul>
+        <li><strong>Cookies técnicas:</strong> Son aquellas que permiten al usuario la navegación a través de una página web, plataforma o aplicación y la utilización de las diferentes opciones o servicios que en ella existan.</li>
+        <li><strong>Cookies de análisis:</strong> Son aquellas que bien tratadas por nosotros o por terceros, nos permiten cuantificar el número de usuarios y así realizar la medición y análisis estadístico de la utilización que hacen los usuarios del servicio ofertado.</li>
+      </ul>
+      
+      <h2>3. Revocación y eliminación de cookies</h2>
+      <p>Usted puede permitir, bloquear o eliminar las cookies instaladas en su equipo mediante la configuración de las opciones del navegador instalado en su ordenador.</p>
+    `
   }
 };
 
@@ -358,11 +409,12 @@ export const TRANSLATIONS = {
       
       // Home Calculator
       home_budget_title: 'Calcula tu Presupuesto',
-      home_budget_subtitle: 'Obtén una estimación instantánea sin compromiso.',
-      home_budget_select: 'Selecciona Servicio',
-      home_budget_result_label: 'Precio Estimado',
-      home_budget_cta: 'Reservar Cita Ahora',
-      home_budget_legal: '*Prices excl. VAT. Subject to final assessment.'
+      home_budget_subtitle: 'Get an instant estimate without obligation.',
+      home_budget_select: 'Select Service',
+      home_budget_result_label: 'Estimated Price',
+      home_budget_cta: 'Book Appointment Now',
+      home_budget_legal: '*Prices excl. VAT. Subject to final assessment.',
+      admin_search_ph: "Search service, issue or advice..."
     },
   },
   en: {

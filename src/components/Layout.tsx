@@ -295,9 +295,9 @@ const Layout: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 mt-8 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
           <p className="mb-4 md:mb-0">&copy; {new Date().getFullYear()} ServicioHogar24. {t('footer_rights')}</p>
           <div className="flex gap-6">
-             <Link to="#" className="hover:text-slate-300 transition">Aviso Legal</Link>
-             <Link to="#" className="hover:text-slate-300 transition">Política de Privacidad</Link>
-             <Link to="#" className="hover:text-slate-300 transition">Cookies</Link>
+             <Link to="/aviso-legal" className="hover:text-slate-300 transition">Aviso Legal</Link>
+             <Link to="/politica-privacidad" className="hover:text-slate-300 transition">Política de Privacidad</Link>
+             <Link to="/politica-cookies" className="hover:text-slate-300 transition">Cookies</Link>
           </div>
         </div>
       </footer>

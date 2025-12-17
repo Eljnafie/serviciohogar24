@@ -90,4 +90,9 @@ export interface SiteConfig {
     feature3Title: string;
     feature3Desc: string;
   };
+  legal: {
+    legalNotice: string;
+    privacyPolicy: string;
+    cookiesPolicy: string;
+  };
 }
